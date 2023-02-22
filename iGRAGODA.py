@@ -10,22 +10,22 @@ BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
  
-FPS = 60        # число кадров в секунду
+FPS = 90        # число кадров в секунду
 clock = pygame.time.Clock()
 
-hero = pygame.image.load("Hero.png")
-hero = pygame.transform.scale(hero,(25,25))
+hero = pygame.image.load("Files/Hero.png")
+hero = pygame.transform.scale(hero,(50,50))
 hero_rect = hero.get_rect()
 
 
-ground = pygame.image.load("Ground.png")
+ground = pygame.image.load("Files/Ground.png")
 ground = pygame.transform.scale(ground,(1280,100))
 ground_rect = ground.get_rect()
 ground_rect.bottom = sc_rect.bottom
 
 hero_rect.bottom = ground_rect.top
 
-item = pygame.image.load("Object.png")
+item = pygame.image.load("Files/Object.png")
 item = pygame.transform.scale(item,(100,100))
 item_rect = item.get_rect()
 item_rect.bottom = ground_rect.top
@@ -83,4 +83,3 @@ while 1:
     sc.blit(ground,ground_rect)
     sc.blit(hero,hero_rect)
     pygame.display.update()
-   
