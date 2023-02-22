@@ -73,10 +73,6 @@ while 1:
         if hero_rect.bottom >= item_rect.top:
             hero_rect.bottom = item_rect.top
 
-                
-    #print(hero_rect.bottom,item_rect.top)
-        
-
     clock.tick(FPS)
     sc.fill(WHITE)
     sc.blit(item,item_rect)
