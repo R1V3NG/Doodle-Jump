@@ -67,6 +67,21 @@ def update_platforms(list,player_y,change):
         if list[item][1] > H:#если y > , то создаю платформу выше экрана
             list[item] = [random.randint(10,400),-10,100,15]
     return list
+
+
+def antispawn(check_platforms):
+    global platforms_list
+    global contained
+    contain = platforms[i].contains(platforms_list[i+1])
+    if contain==True:
+        contained+=platforms_list[i+1]
+        for i in range(len(contained)):
+            contained=[[random.randint(10,400),random.randint(-50,-10),50,10]]
+    else:
+        pass
+    return contained
+
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
