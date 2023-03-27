@@ -2,19 +2,22 @@ import pygame
 import random
 pygame.init()
 
-W = 500
+W = 800
 H = 1000
 sc = pygame.display.set_mode((W,H))
 sc_rect = sc.get_rect()
 pygame.display.set_caption(("igra"))
 WHITE = (255,255,255)
-
+bc = sc
+bc = pygame.image.load("Files/sc.png")
+bc = pygame.transform.scale(bc,(W,H))
 player = pygame.image.load("Files/dj.png")
-player = pygame.transform.scale(player,(100,100))
+player = pygame.transform.scale(player,(100,100)).convert_alpha()
 player_rect = player.get_rect()
-platforms = [[W-W//2,H-25,100,15],[W-W//4,H-100,100,15],[W-W//1.5,H-200,100,15],[W-W//3,H-500,100,15],[W-W//1.2,H-300,100,15],[W-W//1.1,H-400,100,15],[W-W//3.5,H-600,100,15],[W-W//2,H//1.5,100,15],[W-W//3,H//2.5,100,15],[W-W//1.5,H//4,100,15],[W-W//1.2,H//5,100,15]]
-platforma = pygame.image.load("Files/Object.png")
-platforma = pygame.transform.scale(platforma,(100,15))
+platforms = []
+# platforms = [[W-W//2,H-25,100,15],[W-W//4,H-100,100,15],[W-W//1.5,H-200,100,15],[W-W//3,H-500,100,15],[W-W//1.2,H-300,100,15],[W-W//1.1,H-400,100,15],[W-W//3.5,H-600,100,15],[W-W//2,H//1.5,100,15],[W-W//3,H//2.5,100,15],[W-W//1.5,H//4,100,15],[W-W//1.2,H//5,100,15]]
+platforma = pygame.image.load("Files/platform.png").convert_alpha()
+platforma = pygame.transform.scale(platforma,(100,25))
 platforma_rect = platforma.get_rect()
 
 FPS = 90
@@ -24,14 +27,13 @@ fps_count = 0
 player_rect.centerx = sc_rect.centerx
 jumpcheck = False
 change_y = 0
-# def addPlatforms(platform):
-#     global platforma_rect
-#     global player_rect
-#     platforma_rect.x = random.randrange(platforma_rect.x,W-50,20)
-#     platforma_rect.y = random.randrange(player_rect.y,H-15,10)
-#     platforms.append([platforma_rect.x,platforma_rect.y,50,10])
-#     return platform
-# check collision with player
+   
+for i in range(20):
+    x = random.randrange(10,W-100,150)
+    y = random.randrange(10,H-25,50)
+    pl = [x,y,100,25]
+    platforms.append(pl)
+
 def check_collisions(rect_list,jumpcheck):
     global player_rect
     global change_y
@@ -57,36 +59,21 @@ def update_player(possition_y):
 
 def update_platforms(list,player_y,change):
     global player_rect
-    if player_y < H//2 and change < 0: #если положение игрока по y меньше 100 и скорость изменения меньше 0, то есть он находится в положении прыжка
+    if change < 0: #если положение игрока по y меньше 100 и скорость изменения меньше 0, то есть он находится в положении прыжка
         for i in range(len(list)):
             list[i][1] -=change #берём элемент списка, а именно y и уменьшаем его на change(скорость изменения положения игрока в прыжке) грубо говоря опускаем платформы
-                    
     else:
         pass
     for item in range(len(list)):
         if list[item][1] > H:#если y > , то создаю платформу выше экрана
-            list[item] = [random.randint(10,400),-10,100,15]
+            list[item] = [random.randrange(10,W-100,120),random.randrange(-200,-10,50),100,15]
     return list
-
-
-def antispawn(check_platforms):
-    global platforms_list
-    global contained
-    contain = platforms[i].contains(platforms_list[i+1])
-    if contain==True:
-        contained+=platforms_list[i+1]
-        for i in range(len(contained)):
-            contained=[[random.randint(10,400),random.randint(-50,-10),50,10]]
-    else:
-        pass
-    return contained
-
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
-    sc.fill(WHITE)
+    
+    sc.blit(bc,(0,0))
     clock.tick(FPS)
     platforms_list = []
     for i in range(len(platforms)):
@@ -100,12 +87,11 @@ while True:
         player_rect.x-=5
     if keys[pygame.K_RIGHT]:
         player_rect.x+=5
-
     sc.blit(player, (player_rect))
     player_rect.y = update_player(player_rect.y)
     jumpcheck = check_collisions(platforms_list,jumpcheck)
     platforms = update_platforms(platforms,player_rect.y,change_y)
-    #print(jumpcheck)
+
     if player_rect.y > H:
         break
     if player_rect.x > W:
@@ -113,9 +99,7 @@ while True:
     if player_rect.x < 0:
         player_rect.x = W
 
-    #print(change_y)
     pygame.display.update()
-
 
 
 
